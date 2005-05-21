@@ -38,7 +38,7 @@ Features:
 - Multiple browser support, currently Mozilla, MSIE and FireFox.
 
 %description -l pl
-TinyMCE to niezale¿na od platformy kontrolka edytor aWYSIWYG HTML-a
+TinyMCE to niezale¿na od platformy kontrolka edytora WYSIWYG HTML-a
 oparta na WWW z Javascriptem opublikowana z otwartymi ¼ród³ami na
 warunkach licencji LGPL przez Moxiecode Systems AB. Ma mo¿liwo¶æ
 przekszta³cenia pól HTML TEXTAREA i innych elementów HTML-a w
