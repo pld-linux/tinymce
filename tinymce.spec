@@ -1,17 +1,18 @@
 # TODO
 # - separate plugins?
-# - separate panguages?
+# - separate languages?
 # - is the language separation working at all?
+%define	_ver %(echo %{version} | tr . _)
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
-Version:	1.44
-Release:	0.5
-Epoch:		0
-License:	LGPL
+Version:	2.0.1
+Release:	0.3
+License:	LGPL v2
 Group:		Applications/WWW
-Source0:	http://dl.sourceforge.net/tinymce/%{name}_%(echo %{version} | tr . _).tgz
-# Source0-md5:	171cb3ca0fd3232c7822bc06834c8f17
+Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{_ver}.tgz
+# Source0-md5:	c6ee73d135a5b677dacd3feaf3b9c223
+Source1:	tinymce-find_lang.sh
 URL:		http://tinymce.moxiecode.com/
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -33,8 +34,8 @@ Features:
 - Customizable HTML/XHTML 1.0 output. Block invalid elements and force
   attributes.
 - International language support (Language packs) currenly English,
-  Swedish, Italian, German, Czech, Hungarian, Dutch, Finnish, Danish
-  and Arabic and much more.
+  Swedish, Italian, German, Czech, Hungarian, Dutch, Finnish, Danish and
+  Arabic and much more.
 - Multiple browser support, currently Mozilla, MSIE and FireFox.
 
 %description -l pl
@@ -53,12 +54,16 @@ Mo¿liwo¶ci:
 - dostosowywalne wyj¶cie HTML/XHML 1.0; elementy block invalid i
   atrybuty force
 - obs³uga wielu jêzyków (pakiety jêzykowe) - aktualnie angielski,
-  szwedzki, w³oski, niemiecki, czeski, wêgierski, holenderski,
-  fiñski, duñski, arabski i inne
+  szwedzki, w³oski, niemiecki, czeski, wêgierski, holenderski, fiñski,
+  duñski, arabski i inne
 - obs³uga wielu przegl±darek, aktualnie Mozilla, MSIE i Firefox
 
 %prep
 %setup -q -n %{name}
+install %{SOURCE1} find_lang.sh
+mv docs html
+
+rm -f jscripts/tiny_mce/license.txt # LGPL v2
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -67,80 +72,147 @@ install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_appdir}}
 cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
 
+./find_lang.sh > %{name}.lang
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc changelog readme todo
-%doc docs/*.htm docs/*.css
-%lang(zh_CN) %doc docs/zh_cn
+%doc changelog readme
+%doc html
+
+%{_examplesdir}/%{name}-%{version}
 
 %dir %{_appdir}
-%{_appdir}/*.*
+%{_appdir}/*.js
+%{_appdir}/*.htm
+%{_appdir}/utils
 
 %dir %{_appdir}/langs
-%lang(ar) %{_appdir}/langs/ar.js
-%lang(cs) %{_appdir}/langs/cs.js
-%lang(da) %{_appdir}/langs/da.js
-%lang(de) %{_appdir}/langs/de.js
-%lang(el) %{_appdir}/langs/el.js
-%lang(en) %{_appdir}/langs/en.js
-%lang(es) %{_appdir}/langs/es.js
-%lang(fa) %{_appdir}/langs/fa.js
-%lang(fi) %{_appdir}/langs/fi.js
-%lang(fr) %{_appdir}/langs/fr.js
-%lang(fr_CA) %{_appdir}/langs/fr_ca.js
-%lang(hu) %{_appdir}/langs/hu.js
-%lang(it) %{_appdir}/langs/it.js
-%lang(ja) %{_appdir}/langs/ja.js
-%lang(ko) %{_appdir}/langs/ko.js
-%lang(nl) %{_appdir}/langs/nl.js
-%lang(nb) %{_appdir}/langs/no.js
-%lang(pl) %{_appdir}/langs/pl.js
-%lang(pt) %{_appdir}/langs/pt.js
-%lang(ru) %{_appdir}/langs/ru.js
-%lang(sv) %{_appdir}/langs/sv.js
-%lang(th) %{_appdir}/langs/th.js
-%lang(zh_CN) %{_appdir}/langs/zh_cn.js
 %{_appdir}/langs/readme.txt
 
-# TODO languages
 %dir %{_appdir}/plugins
 %{_appdir}/plugins/readme.txt
+
+%dir %{_appdir}/plugins/_template
+%{_appdir}/plugins/_template/*.*
+%{_appdir}/plugins/_template/images
+%dir %{_appdir}/plugins/_template/langs
 
 %dir %{_appdir}/plugins/advhr
 %{_appdir}/plugins/advhr/*.*
 %{_appdir}/plugins/advhr/images
+%{_appdir}/plugins/advhr/jscripts
 %dir %{_appdir}/plugins/advhr/langs
-%lang(cs) %{_appdir}/plugins/advhr/langs/cs.js
-%lang(de) %{_appdir}/plugins/advhr/langs/de.js
-%lang(en) %{_appdir}/plugins/advhr/langs/en.js
-%lang(fa) %{_appdir}/plugins/advhr/langs/fa.js
-%lang(fr) %{_appdir}/plugins/advhr/langs/fr.js
-%lang(fr_CA) %{_appdir}/plugins/advhr/langs/fr_ca.js
-%lang(pl) %{_appdir}/plugins/advhr/langs/pl.js
-%lang(sv) %{_appdir}/plugins/advhr/langs/sv.js
-%lang(zh_CN) %{_appdir}/plugins/advhr/langs/zh_cn.js
 
-# TODO: .. continue after testing is language separation working at all...
-%{_appdir}/plugins/advimage
-%{_appdir}/plugins/advlink
+%dir %{_appdir}/plugins/advimage
+%{_appdir}/plugins/advimage/*.*
+%{_appdir}/plugins/advimage/css
+%{_appdir}/plugins/advimage/images
+%{_appdir}/plugins/advimage/jscripts
+%dir %{_appdir}/plugins/advimage/langs
+
+%dir %{_appdir}/plugins/advlink
+%{_appdir}/plugins/advlink/*.*
+%{_appdir}/plugins/advlink/css
+%{_appdir}/plugins/advlink/jscripts
+%dir %{_appdir}/plugins/advlink/langs
+
+%dir %{_appdir}/plugins/autosave
+%{_appdir}/plugins/autosave/*.*
+%dir %{_appdir}/plugins/autosave/langs
+
 %{_appdir}/plugins/contextmenu
-%{_appdir}/plugins/emotions
-%{_appdir}/plugins/flash
-%{_appdir}/plugins/iespell
-%{_appdir}/plugins/insertdatetime
-%{_appdir}/plugins/preview
-%{_appdir}/plugins/print
-%{_appdir}/plugins/save
-%{_appdir}/plugins/searchreplace
-%{_appdir}/plugins/table
-%{_appdir}/plugins/zoom
 
-# TODO languages
-%{_appdir}/themes
+%dir %{_appdir}/plugins/directionality
+%{_appdir}/plugins/directionality/*.*
+%{_appdir}/plugins/directionality/images
+%dir %{_appdir}/plugins/directionality/langs
 
-%dir %{_examplesdir}/%{name}-%{version}
-%{_examplesdir}/%{name}-%{version}/*.*
-%lang(zh_CN) %{_examplesdir}/%{name}-%{version}/zh_cn
+%dir %{_appdir}/plugins/emotions
+%{_appdir}/plugins/emotions/*.*
+%{_appdir}/plugins/emotions/images
+%{_appdir}/plugins/emotions/jscripts
+%dir %{_appdir}/plugins/emotions/langs
+
+%dir %{_appdir}/plugins/flash
+%{_appdir}/plugins/flash/*.*
+%{_appdir}/plugins/flash/css
+%{_appdir}/plugins/flash/images
+%{_appdir}/plugins/flash/jscripts
+%dir %{_appdir}/plugins/flash/langs
+
+%dir %{_appdir}/plugins/fullscreen
+%{_appdir}/plugins/fullscreen/*.*
+%{_appdir}/plugins/fullscreen/images
+%dir %{_appdir}/plugins/fullscreen/langs
+
+%dir %{_appdir}/plugins/iespell
+%{_appdir}/plugins/iespell/*.*
+%{_appdir}/plugins/iespell/images
+%dir %{_appdir}/plugins/iespell/langs
+
+%dir %{_appdir}/plugins/inlinepopups
+%{_appdir}/plugins/inlinepopups/*.*
+%{_appdir}/plugins/inlinepopups/images
+%{_appdir}/plugins/inlinepopups/css
+%{_appdir}/plugins/inlinepopups/jscripts
+
+%dir %{_appdir}/plugins/insertdatetime
+%{_appdir}/plugins/insertdatetime/*.*
+%{_appdir}/plugins/insertdatetime/images
+%dir %{_appdir}/plugins/insertdatetime/langs
+
+%{_appdir}/plugins/noneditable
+
+%dir %{_appdir}/plugins/paste
+%{_appdir}/plugins/paste/*.*
+%{_appdir}/plugins/paste/css
+%{_appdir}/plugins/paste/images
+%{_appdir}/plugins/paste/jscripts
+%dir %{_appdir}/plugins/paste/langs
+
+%dir %{_appdir}/plugins/preview
+%{_appdir}/plugins/preview/*.*
+%{_appdir}/plugins/preview/images
+%dir %{_appdir}/plugins/preview/langs
+
+%dir %{_appdir}/plugins/print
+%{_appdir}/plugins/print/*.*
+%{_appdir}/plugins/print/images
+%dir %{_appdir}/plugins/print/langs
+
+%dir %{_appdir}/plugins/save
+%{_appdir}/plugins/save/*.*
+%{_appdir}/plugins/save/images
+%dir %{_appdir}/plugins/save/langs
+
+%dir %{_appdir}/plugins/searchreplace
+%{_appdir}/plugins/searchreplace/*.*
+%{_appdir}/plugins/searchreplace/images
+%{_appdir}/plugins/searchreplace/jscripts
+%dir %{_appdir}/plugins/searchreplace/langs
+
+%dir %{_appdir}/plugins/table
+%{_appdir}/plugins/table/*.*
+%{_appdir}/plugins/table/css
+%{_appdir}/plugins/table/images
+%{_appdir}/plugins/table/jscripts
+%dir %{_appdir}/plugins/table/langs
+%{_appdir}/plugins/table/langs/readme.txt
+
+%dir %{_appdir}/plugins/zoom
+%{_appdir}/plugins/zoom/*.*
+
+%dir %{_appdir}/themes
+%{_appdir}/themes/simple
+
+%dir %{_appdir}/themes/advanced
+%{_appdir}/themes/advanced/*.*
+%{_appdir}/themes/advanced/css
+%{_appdir}/themes/advanced/docs
+%{_appdir}/themes/advanced/images
+%{_appdir}/themes/advanced/jscripts
+%dir %{_appdir}/themes/advanced/langs
+%{_appdir}/themes/advanced/langs/*.txt
