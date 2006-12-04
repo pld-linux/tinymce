@@ -1,18 +1,15 @@
 # TODO
 # - separate plugins?
-# - separate languages?
-# - is the language separation working at all?
 %define	_ver %(echo %{version} | tr . _)
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
-Version:	2.0.1
-Release:	0.3
+Version:	2.0.8
+Release:	0.1
 License:	LGPL v2
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{_ver}.tgz
-# Source0-md5:	c6ee73d135a5b677dacd3feaf3b9c223
-Source1:	tinymce-find_lang.sh
+# Source0-md5:	1e830e21c329278d8665966b82af2dfe
 URL:		http://tinymce.moxiecode.com/
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -60,7 +57,6 @@ Mo¿liwo¶ci:
 
 %prep
 %setup -q -n %{name}
-install %{SOURCE1} find_lang.sh
 mv docs html
 
 rm -f jscripts/tiny_mce/license.txt # LGPL v2
@@ -72,12 +68,10 @@ install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_appdir}}
 cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
 
-./find_lang.sh > %{name}.lang
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %{name}.lang
+%files
 %defattr(644,root,root,755)
 %doc changelog readme
 %doc html
@@ -91,128 +85,40 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir %{_appdir}/langs
 %{_appdir}/langs/readme.txt
+%{_appdir}/langs/en.js
 
 %dir %{_appdir}/plugins
 %{_appdir}/plugins/readme.txt
 
-%dir %{_appdir}/plugins/_template
-%{_appdir}/plugins/_template/*.*
-%{_appdir}/plugins/_template/images
-%dir %{_appdir}/plugins/_template/langs
-
-%dir %{_appdir}/plugins/advhr
-%{_appdir}/plugins/advhr/*.*
-%{_appdir}/plugins/advhr/images
-%{_appdir}/plugins/advhr/jscripts
-%dir %{_appdir}/plugins/advhr/langs
-
-%dir %{_appdir}/plugins/advimage
-%{_appdir}/plugins/advimage/*.*
-%{_appdir}/plugins/advimage/css
-%{_appdir}/plugins/advimage/images
-%{_appdir}/plugins/advimage/jscripts
-%dir %{_appdir}/plugins/advimage/langs
-
-%dir %{_appdir}/plugins/advlink
-%{_appdir}/plugins/advlink/*.*
-%{_appdir}/plugins/advlink/css
-%{_appdir}/plugins/advlink/jscripts
-%dir %{_appdir}/plugins/advlink/langs
-
-%dir %{_appdir}/plugins/autosave
-%{_appdir}/plugins/autosave/*.*
-%dir %{_appdir}/plugins/autosave/langs
-
+%{_appdir}/plugins/advhr
+%{_appdir}/plugins/advimage
+%{_appdir}/plugins/advlink
+%{_appdir}/plugins/autosave
+%{_appdir}/plugins/cleanup
 %{_appdir}/plugins/contextmenu
-
-%dir %{_appdir}/plugins/directionality
-%{_appdir}/plugins/directionality/*.*
-%{_appdir}/plugins/directionality/images
-%dir %{_appdir}/plugins/directionality/langs
-
-%dir %{_appdir}/plugins/emotions
-%{_appdir}/plugins/emotions/*.*
-%{_appdir}/plugins/emotions/images
-%{_appdir}/plugins/emotions/jscripts
-%dir %{_appdir}/plugins/emotions/langs
-
-%dir %{_appdir}/plugins/flash
-%{_appdir}/plugins/flash/*.*
-%{_appdir}/plugins/flash/css
-%{_appdir}/plugins/flash/images
-%{_appdir}/plugins/flash/jscripts
-%dir %{_appdir}/plugins/flash/langs
-
-%dir %{_appdir}/plugins/fullscreen
-%{_appdir}/plugins/fullscreen/*.*
-%{_appdir}/plugins/fullscreen/images
-%dir %{_appdir}/plugins/fullscreen/langs
-
-%dir %{_appdir}/plugins/iespell
-%{_appdir}/plugins/iespell/*.*
-%{_appdir}/plugins/iespell/images
-%dir %{_appdir}/plugins/iespell/langs
-
-%dir %{_appdir}/plugins/inlinepopups
-%{_appdir}/plugins/inlinepopups/*.*
-%{_appdir}/plugins/inlinepopups/images
-%{_appdir}/plugins/inlinepopups/css
-%{_appdir}/plugins/inlinepopups/jscripts
-
-%dir %{_appdir}/plugins/insertdatetime
-%{_appdir}/plugins/insertdatetime/*.*
-%{_appdir}/plugins/insertdatetime/images
-%dir %{_appdir}/plugins/insertdatetime/langs
-
+%{_appdir}/plugins/devkit
+%{_appdir}/plugins/directionality
+%{_appdir}/plugins/emotions
+%{_appdir}/plugins/flash
+%{_appdir}/plugins/fullpage
+%{_appdir}/plugins/fullscreen
+%{_appdir}/plugins/iespell
+%{_appdir}/plugins/inlinepopups
+%{_appdir}/plugins/insertdatetime
+%{_appdir}/plugins/layer
+%{_appdir}/plugins/media
+%{_appdir}/plugins/nonbreaking
 %{_appdir}/plugins/noneditable
+%{_appdir}/plugins/paste
+%{_appdir}/plugins/preview
+%{_appdir}/plugins/print
+%{_appdir}/plugins/save
+%{_appdir}/plugins/searchreplace
+%{_appdir}/plugins/style
+%{_appdir}/plugins/table
+%{_appdir}/plugins/visualchars
+%{_appdir}/plugins/xhtmlxtras
+%{_appdir}/plugins/zoom
 
-%dir %{_appdir}/plugins/paste
-%{_appdir}/plugins/paste/*.*
-%{_appdir}/plugins/paste/css
-%{_appdir}/plugins/paste/images
-%{_appdir}/plugins/paste/jscripts
-%dir %{_appdir}/plugins/paste/langs
-
-%dir %{_appdir}/plugins/preview
-%{_appdir}/plugins/preview/*.*
-%{_appdir}/plugins/preview/images
-%dir %{_appdir}/plugins/preview/langs
-
-%dir %{_appdir}/plugins/print
-%{_appdir}/plugins/print/*.*
-%{_appdir}/plugins/print/images
-%dir %{_appdir}/plugins/print/langs
-
-%dir %{_appdir}/plugins/save
-%{_appdir}/plugins/save/*.*
-%{_appdir}/plugins/save/images
-%dir %{_appdir}/plugins/save/langs
-
-%dir %{_appdir}/plugins/searchreplace
-%{_appdir}/plugins/searchreplace/*.*
-%{_appdir}/plugins/searchreplace/images
-%{_appdir}/plugins/searchreplace/jscripts
-%dir %{_appdir}/plugins/searchreplace/langs
-
-%dir %{_appdir}/plugins/table
-%{_appdir}/plugins/table/*.*
-%{_appdir}/plugins/table/css
-%{_appdir}/plugins/table/images
-%{_appdir}/plugins/table/jscripts
-%dir %{_appdir}/plugins/table/langs
-%{_appdir}/plugins/table/langs/readme.txt
-
-%dir %{_appdir}/plugins/zoom
-%{_appdir}/plugins/zoom/*.*
-
-%dir %{_appdir}/themes
 %{_appdir}/themes/simple
-
-%dir %{_appdir}/themes/advanced
-%{_appdir}/themes/advanced/*.*
-%{_appdir}/themes/advanced/css
-%{_appdir}/themes/advanced/docs
-%{_appdir}/themes/advanced/images
-%{_appdir}/themes/advanced/jscripts
-%dir %{_appdir}/themes/advanced/langs
-%{_appdir}/themes/advanced/langs/*.txt
+%{_appdir}/themes/advanced
