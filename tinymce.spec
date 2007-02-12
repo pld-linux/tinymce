@@ -2,7 +2,7 @@
 # - separate plugins?
 %define	_ver %(echo %{version} | tr . _)
 Summary:	Web based Javascript HTML WYSIWYG editor control
-Summary(pl.UTF-8):   Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
+Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
 Version:	2.0.8
 Release:	0.1
