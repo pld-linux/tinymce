@@ -2,7 +2,7 @@
 # - separate plugins?
 %define	_ver %(echo %{version} | tr . _)
 Summary:	Web based Javascript HTML WYSIWYG editor control
-Summary(pl):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
+Summary(pl.UTF-8):   Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
 Version:	2.0.8
 Release:	0.1
@@ -35,25 +35,25 @@ Features:
   Arabic and much more.
 - Multiple browser support, currently Mozilla, MSIE and FireFox.
 
-%description -l pl
-TinyMCE to niezale縩a od platformy kontrolka edytora WYSIWYG HTML-a
-oparta na WWW z Javascriptem opublikowana z otwartymi 紃骴砤mi na
-warunkach licencji LGPL przez Moxiecode Systems AB. Ma mo縧iwo舵
-przekszta砪enia p髄 HTML TEXTAREA i innych element體 HTML-a w
-instancje edytora. TinyMCE jest bardzo 砤twy do integracji w innych
+%description -l pl.UTF-8
+TinyMCE to niezale偶na od platformy kontrolka edytora WYSIWYG HTML-a
+oparta na WWW z Javascriptem opublikowana z otwartymi 藕r贸d艂ami na
+warunkach licencji LGPL przez Moxiecode Systems AB. Ma mo偶liwo艣膰
+przekszta艂cenia p贸l HTML TEXTAREA i innych element贸w HTML-a w
+instancje edytora. TinyMCE jest bardzo 艂atwy do integracji w innych
 systemach CMS.
 
-Mo縧iwo禼i:
-- 砤twa do zintegrowania przy u縴ciu tylko dw骳h linijek kodu
-- obs硊ga motyw體 i szablon體
-- obs硊ga wtyczek
-- 砤twa do rozszerzenia w砤snym kodem
-- dostosowywalne wyj禼ie HTML/XHML 1.0; elementy block invalid i
+Mo偶liwo艣ci:
+- 艂atwa do zintegrowania przy u偶yciu tylko dw贸ch linijek kodu
+- obs艂uga motyw贸w i szablon贸w
+- obs艂uga wtyczek
+- 艂atwa do rozszerzenia w艂asnym kodem
+- dostosowywalne wyj艣cie HTML/XHML 1.0; elementy block invalid i
   atrybuty force
-- obs硊ga wielu j陑yk體 (pakiety j陑ykowe) - aktualnie angielski,
-  szwedzki, w硂ski, niemiecki, czeski, w阦ierski, holenderski, fi駍ki,
-  du駍ki, arabski i inne
-- obs硊ga wielu przegl眃arek, aktualnie Mozilla, MSIE i Firefox
+- obs艂uga wielu j臋zyk贸w (pakiety j臋zykowe) - aktualnie angielski,
+  szwedzki, w艂oski, niemiecki, czeski, w臋gierski, holenderski, fi艅ski,
+  du艅ski, arabski i inne
+- obs艂uga wielu przegl膮darek, aktualnie Mozilla, MSIE i Firefox
 
 %prep
 %setup -q -n %{name}
