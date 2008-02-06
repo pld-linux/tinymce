@@ -4,12 +4,12 @@
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
-Version:	2.1.2
+Version:	2.1.1
 Release:	1
 License:	LGPL v2
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{_ver}.tgz
-# Source0-md5:	6ec6884c8555c295f65fa431fb326328
+# Source0-md5:	2339768c1da42137e864779ecb45e4ae
 URL:		http://tinymce.moxiecode.com/
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
