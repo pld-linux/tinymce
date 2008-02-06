@@ -1,6 +1,5 @@
 # TODO
 # - separate plugins?
-# - package _src.js separately or remove
 %define		ver %(echo %{version} | tr . _)
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
@@ -63,6 +62,7 @@ find '(' -name '*.js' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 
 
 rm -f tinymce/jscripts/tiny_mce/license.txt # LGPL v2
 
+find -name '*_src.js' | xargs rm
 mv tinymce/jscripts/tiny_mce/plugins/_template .
 
 %install
