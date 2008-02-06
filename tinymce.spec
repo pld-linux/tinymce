@@ -59,7 +59,7 @@ Możliwości:
 %setup -q -n %{name}
 mv docs html
 
-find '(' -name '*.js' -o -name '*.html' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
+find '(' -name '*.js' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
 rm -f jscripts/tiny_mce/license.txt # LGPL v2
 
