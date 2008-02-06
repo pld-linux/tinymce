@@ -1,15 +1,16 @@
 # TODO
 # - separate plugins?
-%define	_ver %(echo %{version} | tr . _)
+# - package _src.js separately or remove
+%define		ver %(echo %{version} | tr . _)
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
-Version:	2.1.2
+Version:	2.1.3
 Release:	1
 License:	LGPL v2
 Group:		Applications/WWW
-Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{_ver}.tgz
-# Source0-md5:	6ec6884c8555c295f65fa431fb326328
+Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.tgz
+# Source0-md5:	939b3dff50fb3f585034d935fc894cda
 URL:		http://tinymce.moxiecode.com/
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -56,27 +57,27 @@ Możliwości:
 - obsługa wielu przeglądarek, aktualnie Mozilla, MSIE i Firefox
 
 %prep
-%setup -q -n %{name}
-mv docs html
+%setup -qc
 
 find '(' -name '*.js' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
-rm -f jscripts/tiny_mce/license.txt # LGPL v2
+rm -f tinymce/jscripts/tiny_mce/license.txt # LGPL v2
+
+mv tinymce/jscripts/tiny_mce/plugins/_template .
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_appdir}}
 
-cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -a jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
+cp -a _template tinymce/examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -a tinymce/jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc changelog readme
-%doc html
+%doc tinymce/{changelog,readme}
 
 %{_examplesdir}/%{name}-%{version}
 
