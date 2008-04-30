@@ -4,12 +4,12 @@
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
-Version:	2.1.3
-Release:	2
+Version:	3.0.7
+Release:	0.1
 License:	LGPL v2
 Group:		Applications/WWW
-Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.tgz
-# Source0-md5:	939b3dff50fb3f585034d935fc894cda
+Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.zip
+# Source0-md5:	7b0d187b6b0b87ea2840b5330919017d
 URL:		http://tinymce.moxiecode.com/
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -57,53 +57,50 @@ Możliwości:
 
 %prep
 %setup -qc
+mv tinymce/* .
 
 find '(' -name '*.js' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
-rm -f tinymce/jscripts/tiny_mce/license.txt # LGPL v2
+rm jscripts/tiny_mce/license.txt # LGPL v2
 
 find -name '*_src.js' | xargs rm
-mv tinymce/jscripts/tiny_mce/plugins/_template .
+
+mv jscripts/tiny_mce/plugins/example .
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_appdir}}
 
-cp -a _template tinymce/examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -a tinymce/jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
+cp -a example examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -a jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc tinymce/{changelog,readme}
+%doc changelog.txt
 
 %{_examplesdir}/%{name}-%{version}
 
 %dir %{_appdir}
 %{_appdir}/*.js
-%{_appdir}/*.htm
 %{_appdir}/utils
 
 %dir %{_appdir}/langs
-%{_appdir}/langs/readme.txt
 %{_appdir}/langs/en.js
 
 %dir %{_appdir}/plugins
-%{_appdir}/plugins/readme.txt
 
 %{_appdir}/plugins/advhr
 %{_appdir}/plugins/advimage
 %{_appdir}/plugins/advlink
 %{_appdir}/plugins/autosave
 %{_appdir}/plugins/bbcode
-%{_appdir}/plugins/cleanup
+%{_appdir}/plugins/compat2x
 %{_appdir}/plugins/contextmenu
-%{_appdir}/plugins/devkit
 %{_appdir}/plugins/directionality
 %{_appdir}/plugins/emotions
-%{_appdir}/plugins/flash
 %{_appdir}/plugins/fullpage
 %{_appdir}/plugins/fullscreen
 %{_appdir}/plugins/iespell
@@ -113,17 +110,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/plugins/media
 %{_appdir}/plugins/nonbreaking
 %{_appdir}/plugins/noneditable
+%{_appdir}/plugins/pagebreak
 %{_appdir}/plugins/paste
 %{_appdir}/plugins/preview
 %{_appdir}/plugins/print
+%{_appdir}/plugins/safari
 %{_appdir}/plugins/save
 %{_appdir}/plugins/searchreplace
+%{_appdir}/plugins/spellchecker
 %{_appdir}/plugins/style
 %{_appdir}/plugins/table
 %{_appdir}/plugins/template
 %{_appdir}/plugins/visualchars
 %{_appdir}/plugins/xhtmlxtras
-%{_appdir}/plugins/zoom
 
 %dir %{_appdir}/themes
 %{_appdir}/themes/simple
