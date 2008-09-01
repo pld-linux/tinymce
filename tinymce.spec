@@ -67,6 +67,9 @@ find -name '*_src.js' | xargs rm
 
 mv jscripts/tiny_mce/plugins/example .
 
+# tinymce-spellchecker.spec packages this
+rm -rf jscripts/tiny_mce/plugins/spellchecker
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_appdir}}
@@ -117,7 +120,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/plugins/safari
 %{_appdir}/plugins/save
 %{_appdir}/plugins/searchreplace
-%{_appdir}/plugins/spellchecker
 %{_appdir}/plugins/style
 %{_appdir}/plugins/table
 %{_appdir}/plugins/template
