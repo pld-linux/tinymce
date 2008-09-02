@@ -5,13 +5,14 @@ Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
 Version:	3.1.1
-Release:	0.3
+Release:	0.4
 License:	LGPL v2
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.zip
 # Source0-md5:	ef5aa95100a79f3b2509d6e5c8ec9e7e
 URL:		http://tinymce.moxiecode.com/
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	sed >= 4.0
 Requires:	webapps
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -76,7 +77,7 @@ mv jscripts/tiny_mce/plugins/example .
 rm -rf jscripts/tiny_mce/plugins/spellchecker
 
 cat <<'EOF' > apache.conf
-Alias /tinymce %{_appdir}
+Alias /tiny_mce %{_appdir}
 <Directory %{_appdir}>
 	Allow from all
 </Directory>
@@ -84,7 +85,7 @@ EOF
 
 cat > lighttpd.conf <<'EOF'
 alias.url += (
-    "/tinymce" => "%{_appdir}php",
+    "/tiny_mce" => "%{_appdir}php",
 )
 EOF
 
