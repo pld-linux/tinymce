@@ -5,15 +5,20 @@ Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
 Version:	3.1.1
-Release:	1
+Release:	0.3
 License:	LGPL v2
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.zip
 # Source0-md5:	ef5aa95100a79f3b2509d6e5c8ec9e7e
 URL:		http://tinymce.moxiecode.com/
+BuildRequires:	rpmbuild(macros) >= 1.268
+Requires:	webapps
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_webapps	/etc/webapps
+%define		_webapp		%{name}
+%define		_sysconfdir	%{_webapps}/%{_webapp}
 %define		_appdir	%{_datadir}/%{name}
 
 %description
@@ -70,21 +75,58 @@ mv jscripts/tiny_mce/plugins/example .
 # tinymce-spellchecker.spec packages this
 rm -rf jscripts/tiny_mce/plugins/spellchecker
 
+cat <<'EOF' > apache.conf
+Alias /tinymce %{_appdir}
+<Directory %{_appdir}>
+	Allow from all
+</Directory>
+EOF
+
+cat > lighttpd.conf <<'EOF'
+alias.url += (
+    "/tinymce" => "%{_appdir}php",
+)
+EOF
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_appdir}}
+install -d $RPM_BUILD_ROOT{%{_examplesdir}/%{name}-%{version},%{_appdir},%{_sysconfdir}}
 
 cp -a example examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
 
+cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+cp -a lighttpd.conf $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%triggerin -- apache1 < 1.3.37-3, apache1-base
+%webapp_register apache %{_webapp}
+
+%triggerun -- apache1 < 1.3.37-3, apache1-base
+%webapp_unregister apache %{_webapp}
+
+%triggerin -- apache < 2.2.0, apache-base
+%webapp_register httpd %{_webapp}
+
+%triggerun -- apache < 2.2.0, apache-base
+%webapp_unregister httpd %{_webapp}
+
+%triggerin -- lighttpd
+%webapp_register lighttpd %{_webapp}
+
+%triggerun -- lighttpd
+%webapp_unregister lighttpd %{_webapp}
 
 %files
 %defattr(644,root,root,755)
 %doc changelog.txt
-
-%{_examplesdir}/%{name}-%{version}
+%dir %attr(750,root,http) %{_sysconfdir}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
 
 %dir %{_appdir}
 %{_appdir}/*.js
@@ -129,3 +171,5 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_appdir}/themes
 %{_appdir}/themes/simple
 %{_appdir}/themes/advanced
+
+%{_examplesdir}/%{name}-%{version}
