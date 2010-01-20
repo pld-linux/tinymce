@@ -4,12 +4,12 @@
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
-Version:	3.2.0.2
+Version:	3.2.4.1
 Release:	1
 License:	LGPL v2
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.zip
-# Source0-md5:	e5f324a9d75002d230ebc5374b0e52bd
+# Source0-md5:	70bf7209515af5fccf1c33b6319f4cd7
 URL:		http://tinymce.moxiecode.com/
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
@@ -20,7 +20,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_webapps	/etc/webapps
 %define		_webapp		%{name}
 %define		_sysconfdir	%{_webapps}/%{_webapp}
-%define		_appdir	%{_datadir}/%{name}
+%define		_appdir		%{_datadir}/%{name}
 
 %description
 TinyMCE is a platform independent web based Javascript HTML WYSIWYG
@@ -63,7 +63,6 @@ Możliwości:
 
 %prep
 %setup -qc
-mv tinymce/* .
 
 find '(' -name '*.js' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
@@ -164,6 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/plugins/save
 %{_appdir}/plugins/searchreplace
 %{_appdir}/plugins/style
+%{_appdir}/plugins/tabfocus
 %{_appdir}/plugins/table
 %{_appdir}/plugins/template
 %{_appdir}/plugins/visualchars
