@@ -13,6 +13,7 @@ Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.zip
 URL:		http://tinymce.moxiecode.com/
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
+BuildRequires:	unzip
 Requires:	webapps
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
