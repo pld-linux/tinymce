@@ -4,17 +4,18 @@
 Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
-Version:	3.2.4.1
+Version:	3.2.7
 Release:	1
 License:	LGPL v2
 Group:		Applications/WWW
-Source0:	http://dl.sourceforge.net/tinymce/%{name}_%{ver}.zip
-# Source0-md5:	70bf7209515af5fccf1c33b6319f4cd7
+Source0:	http://downloads.sourceforge.net/tinymce/%{name}_%{ver}.zip
+# Source0-md5:	65c65a953a0bcfb5ebc5c9d8d749c5ef
 URL:		http://tinymce.moxiecode.com/
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
 BuildRequires:	unzip
 Requires:	webapps
+Requires:	webserver(alias)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -64,6 +65,7 @@ Możliwości:
 
 %prep
 %setup -qc
+mv tinymce/* .
 
 find '(' -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
@@ -141,9 +143,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/plugins/advhr
 %{_appdir}/plugins/advimage
 %{_appdir}/plugins/advlink
+%{_appdir}/plugins/autoresize
 %{_appdir}/plugins/autosave
 %{_appdir}/plugins/bbcode
-%{_appdir}/plugins/compat2x
 %{_appdir}/plugins/contextmenu
 %{_appdir}/plugins/directionality
 %{_appdir}/plugins/emotions
@@ -168,6 +170,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/plugins/table
 %{_appdir}/plugins/template
 %{_appdir}/plugins/visualchars
+%{_appdir}/plugins/wordcount
 %{_appdir}/plugins/xhtmlxtras
 
 %dir %{_appdir}/themes
