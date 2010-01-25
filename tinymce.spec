@@ -65,7 +65,7 @@ Możliwości:
 %prep
 %setup -qc
 
-find '(' -name '*.js' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
+find '(' -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.htm' ')' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
 rm jscripts/tiny_mce/license.txt # LGPL v2
 
