@@ -5,7 +5,7 @@ Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
 Version:	3.2.7
-Release:	1
+Release:	2
 License:	LGPL v2
 Group:		Applications/WWW
 Source0:	http://downloads.sourceforge.net/tinymce/%{name}_%{ver}.zip
@@ -16,6 +16,7 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	unzip
 Requires:	webapps
 Requires:	webserver(alias)
+Conflicts:	apache-base < 2.4.0-1
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -85,6 +86,13 @@ Alias /tiny_mce/ %{_appdir}/
 </Directory>
 EOF
 
+cat <<'EOF' > httpd.conf
+Alias /tiny_mce/ %{_appdir}/
+<Directory %{_appdir}>
+	Require all granted
+</Directory>
+EOF
+
 cat > lighttpd.conf <<'EOF'
 alias.url += (
     "/tiny_mce/" => "%{_appdir}/",
@@ -99,7 +107,7 @@ cp -a example examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a jscripts/tiny_mce/* $RPM_BUILD_ROOT%{_appdir}
 
 cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
-cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+cp -a httpd.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 cp -a lighttpd.conf $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 %clean
@@ -111,10 +119,10 @@ rm -rf $RPM_BUILD_ROOT
 %triggerun -- apache1 < 1.3.37-3, apache1-base
 %webapp_unregister apache %{_webapp}
 
-%triggerin -- apache < 2.2.0, apache-base
+%triggerin -- apache-base
 %webapp_register httpd %{_webapp}
 
-%triggerun -- apache < 2.2.0, apache-base
+%triggerun -- apache-base
 %webapp_unregister httpd %{_webapp}
 
 %triggerin -- lighttpd
