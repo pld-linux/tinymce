@@ -5,7 +5,7 @@ Summary:	Web based Javascript HTML WYSIWYG editor control
 Summary(pl.UTF-8):	Kontrolka edytora WYSIWYG HTML-a oparta na WWW z Javascriptem
 Name:		tinymce
 Version:	3.2.7
-Release:	1
+Release:	3
 License:	LGPL v2
 Group:		Applications/WWW
 Source0:	http://downloads.sourceforge.net/tinymce/%{name}_%{ver}.zip
@@ -81,7 +81,15 @@ rm -rf jscripts/tiny_mce/plugins/spellchecker
 cat <<'EOF' > apache.conf
 Alias /tiny_mce/ %{_appdir}/
 <Directory %{_appdir}>
-	Allow from all
+	# Apache 2.x
+	<IfModule !mod_authz_core.c>
+		Order allow,deny
+		Allow from all
+	</IfModule>
+	# Apache 2.4
+	<IfModule mod_authz_core.c>
+		Require all granted
+	</IfModule>
 </Directory>
 EOF
 
